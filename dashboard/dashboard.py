@@ -4,14 +4,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
 
-# Konfigurasi halaman
 st.set_page_config(
     page_title="Bike Sharing Dashboard",
     page_icon="🚲",
     layout="wide"
 )
 
-# Judul dashboard
 st.title("🚲 Bike Sharing Analysis Dashboard")
 st.markdown("""
 Dashboard ini digunakan untuk menganalisis pola penyewaan
@@ -19,7 +17,6 @@ sepeda berdasarkan periode waktu dan kondisi cuaca
 selama tahun 2011 hingga 2012.
 """)
 
-# Membaca dataset
 @st.cache_data
 def load_data():
     data_path = Path(__file__).parent / "main_data.csv"
@@ -38,7 +35,6 @@ def load_data():
 
 df = load_data()
 
-# Sidebar filter
 st.sidebar.header("Filter Data")
 
 selected_year = st.sidebar.multiselect(
@@ -53,7 +49,6 @@ selected_weather = st.sidebar.multiselect(
     default=sorted(df["weather_label"].dropna().unique())
 )
 
-# Filter data
 filtered_df = df[
     (df["year"].isin(selected_year)) &
     (df["weather_label"].isin(selected_weather))
@@ -63,7 +58,6 @@ if filtered_df.empty:
     st.warning("Tidak ada data sesuai filter yang dipilih.")
     st.stop()
 
-# KPI
 st.subheader("Ringkasan Data Penyewaan")
 
 col1, col2, col3, col4 = st.columns(4)
@@ -90,7 +84,6 @@ col4.metric(
 
 st.divider()
 
-# Grafik 1: Penyewaan berdasarkan bulan
 st.subheader("1. Perkembangan Penyewaan Sepeda per Bulan")
 
 monthly = (
@@ -128,7 +121,6 @@ plt.tight_layout()
 st.pyplot(fig1)
 plt.close(fig1)
 
-# Grafik 2: Penyewaan berdasarkan cuaca
 st.subheader("2. Penyewaan Sepeda Berdasarkan Kondisi Cuaca")
 
 weather = (
@@ -157,7 +149,6 @@ plt.tight_layout()
 st.pyplot(fig2)
 plt.close(fig2)
 
-# Tabel data
 st.subheader("3. Data Penyewaan Sepeda")
 
 st.dataframe(
